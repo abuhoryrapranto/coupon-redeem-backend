@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import typeorm from './typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CampaignModule } from './campaign/campaign.module';
+import { CouponModule } from './coupon/coupon.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    CampaignModule,
+    CouponModule,
   ],
   controllers: [AppController],
   providers: [AppService],
