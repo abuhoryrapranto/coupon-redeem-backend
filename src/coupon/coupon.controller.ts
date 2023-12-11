@@ -3,7 +3,7 @@ import { CouponService } from './coupon.service';
 import { RedeemCouponDto } from './dto/RedeemCoupon.dto';
 import { CouponInterceptor } from 'src/common/interceptors/coupon/coupon.interceptor';
 
-@Controller('coupon')
+@Controller({ path: 'coupon', version: '1'})
 @UseInterceptors(CouponInterceptor)
 export class CouponController {
 

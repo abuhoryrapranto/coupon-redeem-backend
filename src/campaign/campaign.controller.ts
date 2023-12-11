@@ -1,10 +1,10 @@
-import { Body, Controller, HttpCode, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseInterceptors, UsePipes, ValidationPipe, Version } from '@nestjs/common';
 import { CreateCampaignDto } from './dto/CreateCampaign.dto';
 import { CampaignService } from './campaign.service';
 import { TransformInterceptor } from 'src/common/interceptors/transform/transform.interceptor';
 import { AttachRewardDto } from './dto/AttachReward.dto';
 
-@Controller('campaign')
+@Controller({ path: 'campaign', version: '1'})
 @UseInterceptors(TransformInterceptor)
 export class CampaignController {
 
