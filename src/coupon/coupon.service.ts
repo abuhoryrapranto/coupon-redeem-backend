@@ -6,6 +6,7 @@ import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { RedeemCouponDto } from './dto/RedeemCoupon.dto';
 import { Coupon } from 'src/entities/Coupon';
 import { Reward } from 'src/entities/Reward';
+import { ResponseCoupon } from './dto/ResponseCouponDto';
 
 @Injectable()
 export class CouponService {
@@ -21,7 +22,7 @@ export class CouponService {
     private couponRepository: Repository<Coupon>,
   ) {}
 
-  async redeemCoupon(redeemCouponData: RedeemCouponDto)
+  async redeemCoupon(redeemCouponData: RedeemCouponDto) : Promise<ResponseCoupon>
   {
 
     //check valid player id
@@ -67,6 +68,7 @@ export class CouponService {
                                                 .where('rewardId = :rewardId', {rewardId: rewardId})
                                                 .getMany();
 
+    //unique coupon check
     let couponId : number = 0;
     let value : string = null;
 
@@ -104,7 +106,13 @@ export class CouponService {
                                   .into(PlayerCoupon)
                                   .values(data)
                                   .execute();
-      return 'ok';
+      
+      const response : ResponseCoupon = {
+        id: couponId,
+        value: value
+      }
+
+      return response;
 
     } catch(error) {
 

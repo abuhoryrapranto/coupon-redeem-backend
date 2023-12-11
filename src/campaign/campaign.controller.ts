@@ -12,6 +12,7 @@ export class CampaignController {
 
   
   @Post('/create-reward')
+  @HttpCode(201)
   @UsePipes(ValidationPipe)
   async createReward(@Body() campaignData: CreateCampaignDto)
   {
@@ -19,6 +20,7 @@ export class CampaignController {
   }
 
   @Post('/attach-reward')
+  @HttpCode(200)
   @UsePipes(ValidationPipe)
   async attachReward(@Body() attachRewardData: AttachRewardDto)
   {
