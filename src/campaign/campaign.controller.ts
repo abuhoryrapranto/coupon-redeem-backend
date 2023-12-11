@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, UseInterceptors, UsePipes, ValidationPipe, Version } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UseInterceptors, UsePipes, ValidationPipe, Version } from '@nestjs/common';
 import { CreateCampaignDto } from './dto/CreateCampaign.dto';
 import { CampaignService } from './campaign.service';
 import { TransformInterceptor } from 'src/common/interceptors/transform/transform.interceptor';
@@ -25,5 +25,12 @@ export class CampaignController {
   async attachReward(@Body() attachRewardData: AttachRewardDto)
   {
     return this.campaignService.attachReward(attachRewardData);
+  }
+
+  @Get('/all-rewards')
+  @HttpCode(200)
+  async getAllRewards()
+  {
+    return this.campaignService.getAllRewards();
   }
 }

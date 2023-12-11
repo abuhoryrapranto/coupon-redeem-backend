@@ -12,7 +12,10 @@ describe('CampaignController', () => {
     controller = module.get<CampaignController>(CampaignController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+  describe('getAllRewards', () => {
+    it('should return status code 200', () => {
+      controller.getAllRewards();
+      expect(200);
+    });
+  })
 });

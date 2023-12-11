@@ -62,4 +62,13 @@ export class CampaignService {
       );
     }
   }
+
+  async getAllRewards() : Promise<Reward[]>
+  {
+    const rewards = this.rewardRepository.find();
+
+    if(!rewards)  throw new HttpException('No rewards found.', HttpStatus.NOT_FOUND);
+
+    return rewards;
+  }
 }
