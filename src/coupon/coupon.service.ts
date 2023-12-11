@@ -45,21 +45,20 @@ export class CouponService {
     const endDate : string = reward.endDate.toISOString().split("T")[0];
 
     //check reward dates
-    if(currentDate < startDate  && currentDate > endDate) throw new HttpException('Reward date is over', HttpStatus.BAD_REQUEST);
-
+    if(currentDate < startDate  || currentDate > endDate) throw new HttpException('Reward date is over', HttpStatus.BAD_REQUEST);
     //check daily redeemed coupon
-    const dailyPlayerCouponCount : number = await this.playerCouponRepository.createQueryBuilder()
-                                                                    .where("id = :id", {id: playerId})
-                                                                    .where("DATE(redeemedAt) = :date", { date: new Date().toISOString().split("T")[0] })
+    const dailyPlayerCouponCount = await this.playerCouponRepository.createQueryBuilder()
+                                                                    .where("playerId = :playerId", {playerId: playerId})
+                                                                    .andWhere("DATE(redeemedAt) = :date", { date: new Date().toISOString().split("T")[0]})
                                                                     .getCount();
 
-    if(dailyPlayerCouponCount > 3) throw new HttpException('Already exceeds the daily  limit', HttpStatus.BAD_REQUEST);
+    if(dailyPlayerCouponCount >= 3) throw new HttpException('Already exceeds the daily limit', HttpStatus.BAD_REQUEST);
 
     const sevenDaysAgo = new Date(new Date().setDate(new Date().getDate() - 7));
     
     const weeklyPlayerCouponCount : number = await this.playerCouponRepository.createQueryBuilder()
-                                                                    .where("id = :id", {id: playerId})
-                                                                    .where("DATE(redeemedAt) >= :startDate AND DATE(redeemedAt) <= :endDate", { startDate: sevenDaysAgo, endDate: new Date().toISOString().split("T")[0] })
+                                                                    .where("playerId = :playerId", {playerId: playerId})
+                                                                    .andWhere("DATE(redeemedAt) >= :startDate AND DATE(redeemedAt) <= :endDate", { startDate: sevenDaysAgo, endDate: new Date().toISOString().split("T")[0] })
                                                                     .getCount();
     //check daily redeemed coupon
     if(weeklyPlayerCouponCount > 21) throw new HttpException('Already exceeds the weekly limit', HttpStatus.BAD_REQUEST);
